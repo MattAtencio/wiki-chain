@@ -1,12 +1,12 @@
 /**
- * WikiChain Puzzle Data
+ * WikiChain Puzzle Data — Full Graph Navigation
  *
- * Each puzzle is a graph of articles. Every article has:
- * - blurb: short description shown to the player
- * - links: object where keys are article names, values are true (real) or false (trap/dead-end)
+ * Each puzzle is a connected graph. Every article has:
+ * - blurb: short description
+ * - links: array of article names (all must exist in this puzzle's articles)
  *
- * Real links connect to other articles in the graph.
- * Trap links (false) trigger a dead-end animation and +1 click penalty.
+ * Every link navigates to a real page. No dead ends.
+ * Par = length of the shortest path from start to target.
  */
 
 const puzzles = [
@@ -17,74 +17,68 @@ const puzzles = [
     par: 4,
     articles: {
       "Pizza": {
-        blurb: "A savory dish of Italian origin, consisting of a flat round base of dough topped with tomatoes, cheese, and various toppings, baked at high temperature.",
-        links: {
-          "Italy": true,
-          "Tomato": false,
-          "Fast Food": false,
-          "Cheese": false,
-          "Naples": false,
-          "Bread": false,
-        },
+        blurb: "A savory dish of Italian origin, consisting of a flat round base of dough topped with tomatoes, cheese, and various toppings.",
+        links: ["Italy", "Tomato", "Cheese", "Fast Food"],
       },
       "Italy": {
-        blurb: "A country in southern Europe known for its rich history in art, architecture, and science. Italy's space agency ASI has been a key partner in international space programs.",
-        links: {
-          "Rome": false,
-          "Renaissance": false,
-          "Space Exploration": true,
-          "European Union": false,
-          "Mediterranean Sea": false,
-          "Galileo Galilei": true,
-        },
+        blurb: "A country in southern Europe known for its rich history in art, architecture, and science, with a space agency partnering in international programs.",
+        links: ["Space Exploration", "Galileo", "France", "Rome"],
       },
-      "Galileo Galilei": {
-        blurb: "An Italian astronomer and physicist, often called the father of modern observational astronomy. His telescope observations revolutionized our understanding of the cosmos.",
-        links: {
-          "Telescope": true,
-          "Catholic Church": false,
-          "Physics": false,
-          "Jupiter": false,
-          "Mathematics": false,
-          "Pisa": false,
-        },
+      "Tomato": {
+        blurb: "A red fruit native to the Americas, introduced to Europe by Spanish explorers and now a staple in cuisines worldwide.",
+        links: ["Agriculture", "Italy", "Mexico"],
+      },
+      "Cheese": {
+        blurb: "A dairy product produced in wide ranges of flavors and forms, with France producing over 1,000 distinct varieties.",
+        links: ["France", "Agriculture", "Pizza"],
+      },
+      "Fast Food": {
+        blurb: "Mass-produced food designed for quick commercial service, with the industry originating in America in the early 20th century.",
+        links: ["America", "Cheese", "Pizza"],
+      },
+      "Rome": {
+        blurb: "The capital of Italy and former seat of the Roman Empire, whose engineering achievements influenced civilizations for millennia.",
+        links: ["Italy", "Galileo", "France"],
+      },
+      "Galileo": {
+        blurb: "An Italian astronomer who revolutionized our understanding of the cosmos with his telescope observations of planets and stars.",
+        links: ["Telescope", "Science", "Italy"],
       },
       "Telescope": {
-        blurb: "An optical instrument designed to make distant objects appear closer. Telescopes have been crucial in space observation, from Galileo's first observations to the Hubble Space Telescope used by NASA.",
-        links: {
-          "NASA": true,
-          "Hubble": false,
-          "Light": false,
-          "Observatory": false,
-          "Stars": false,
-          "Lens": false,
-        },
+        blurb: "An optical instrument for observing distant objects, crucial to astronomy from Galileo's era to the Hubble Space Telescope.",
+        links: ["NASA", "Science", "Galileo"],
       },
       "Space Exploration": {
-        blurb: "The use of astronomy and space technology to explore outer space. The Space Race between the US and USSR culminated in humanity's greatest achievement in 1969.",
-        links: {
-          "NASA": true,
-          "International Space Station": false,
-          "Rocket": false,
-          "Mars Rover": false,
-          "Satellite": false,
-          "Cosmonaut": false,
-        },
+        blurb: "The investigation of outer space using astronomy and spacecraft technology, culminating in humanity's greatest achievements beyond Earth.",
+        links: ["NASA", "Science", "Telescope"],
       },
       "NASA": {
-        blurb: "The National Aeronautics and Space Administration, America's space agency. NASA led the Apollo program that achieved the first crewed lunar landing.",
-        links: {
-          "Moon Landing": true,
-          "Space Shuttle": false,
-          "Kennedy Space Center": false,
-          "Astronaut": false,
-          "Mars": false,
-          "Voyager": false,
-        },
+        blurb: "America's space agency, which led the Apollo program and continues to explore the solar system with rovers and telescopes.",
+        links: ["Moon Landing", "Space Exploration", "America"],
+      },
+      "Agriculture": {
+        blurb: "The practice of cultivating crops and raising animals, forming the foundation of human civilization and food systems worldwide.",
+        links: ["Science", "France", "Mexico"],
+      },
+      "France": {
+        blurb: "A Western European country renowned for its cuisine, wine, and cultural landmarks, and Europe's largest agricultural producer.",
+        links: ["Italy", "Cheese", "Agriculture"],
+      },
+      "Science": {
+        blurb: "The systematic study of the natural world through observation and experiment, driving every major technological revolution.",
+        links: ["Space Exploration", "Telescope", "Agriculture"],
+      },
+      "America": {
+        blurb: "A country spanning a vast continent, home to NASA and the world's largest economy, shaped by innovation and exploration.",
+        links: ["NASA", "Space Exploration", "Fast Food"],
+      },
+      "Mexico": {
+        blurb: "A country in North America with ancient civilizations, the origin point of tomatoes, chocolate, and many other crops.",
+        links: ["America", "Agriculture", "Tomato"],
       },
       "Moon Landing": {
-        blurb: "On July 20, 1969, Apollo 11 astronauts Neil Armstrong and Buzz Aldrin became the first humans to walk on the Moon, watched by an estimated 600 million people worldwide.",
-        links: {},
+        blurb: "On July 20, 1969, Apollo 11 astronauts became the first humans to walk on the Moon, watched by 600 million people.",
+        links: ["NASA", "Space Exploration", "America"],
       },
     },
   },
@@ -95,63 +89,68 @@ const puzzles = [
     par: 4,
     articles: {
       "Soccer": {
-        blurb: "The world's most popular sport, known as football outside North America. The modern game was codified in England in 1863 with the formation of the Football Association.",
-        links: {
-          "England": true,
-          "FIFA": false,
-          "World Cup": false,
-          "Goal": false,
-          "Stadium": false,
-          "Brazil": false,
-        },
+        blurb: "The world's most popular sport, codified in England in 1863, now played by over 250 million people across the globe.",
+        links: ["England", "Brazil", "World Cup", "Athletics"],
       },
       "England": {
-        blurb: "A country in the United Kingdom with a deep cultural heritage spanning centuries. Known for its contributions to literature, sport, and the performing arts.",
-        links: {
-          "London": true,
-          "British Empire": false,
-          "Queen Elizabeth": false,
-          "Industrial Revolution": false,
-          "Tea": false,
-          "Elizabethan Era": true,
-        },
+        blurb: "A country in the United Kingdom with deep cultural heritage spanning literature, sport, theater, and centuries of global influence.",
+        links: ["London", "Elizabethan Era", "British Empire", "Soccer"],
+      },
+      "Brazil": {
+        blurb: "The largest country in South America, famous for its passionate football culture, Carnival, and the Amazon rainforest.",
+        links: ["World Cup", "Soccer", "Amazon"],
+      },
+      "World Cup": {
+        blurb: "FIFA's flagship tournament held every four years, the most-watched sporting event on Earth with billions of viewers.",
+        links: ["Soccer", "Brazil", "Athletics"],
+      },
+      "Athletics": {
+        blurb: "Competitive sports involving running, jumping, and throwing, tracing roots to ancient Greek competitions at Olympia.",
+        links: ["Ancient Greece", "World Cup", "England"],
       },
       "London": {
-        blurb: "The capital of England, a global center of arts, finance, and culture. Home to iconic theaters including the reconstructed Globe Theatre on the South Bank of the Thames.",
-        links: {
-          "Globe Theatre": true,
-          "Big Ben": false,
-          "Thames River": false,
-          "Buckingham Palace": false,
-          "Tower of London": false,
-          "Underground": false,
-        },
+        blurb: "The capital of England, a global center of arts and culture, home to iconic theaters including the reconstructed Globe Theatre.",
+        links: ["Globe Theatre", "British Empire", "England", "Theater"],
       },
       "Elizabethan Era": {
-        blurb: "The period of English history during the reign of Queen Elizabeth I (1558–1603), often considered a golden age of English culture, exploration, and dramatic arts.",
-        links: {
-          "Globe Theatre": true,
-          "Sir Francis Drake": false,
-          "Tudor Dynasty": false,
-          "Spanish Armada": false,
-          "Colonialism": false,
-          "Poetry": false,
-        },
+        blurb: "The reign of Queen Elizabeth I (1558–1603), considered a golden age of English culture, exploration, and dramatic arts.",
+        links: ["Globe Theatre", "Poetry", "England", "Theater"],
+      },
+      "British Empire": {
+        blurb: "The largest empire in history at its peak, spreading English language, law, and culture across every continent.",
+        links: ["England", "London", "Ancient Greece"],
       },
       "Globe Theatre": {
-        blurb: "A theatre in London associated with William Shakespeare. Many of his greatest plays were first performed here, including Hamlet, Othello, and King Lear.",
-        links: {
-          "Shakespeare": true,
-          "Theater": false,
-          "Acting": false,
-          "Playwriting": false,
-          "Audience": false,
-          "Stage": false,
-        },
+        blurb: "A theater in London where many of history's greatest plays were first performed, including Hamlet, Othello, and King Lear.",
+        links: ["Shakespeare", "Theater", "London", "Elizabethan Era"],
+      },
+      "Theater": {
+        blurb: "A performing art form with roots in ancient ritual, evolving from Greek amphitheaters to modern stages worldwide.",
+        links: ["Globe Theatre", "Ancient Greece", "Poetry", "London"],
+      },
+      "Poetry": {
+        blurb: "A literary form using aesthetic and rhythmic qualities of language, from ancient epics to Renaissance sonnets.",
+        links: ["Shakespeare", "Ancient Greece", "Elizabethan Era"],
+      },
+      "Ancient Greece": {
+        blurb: "A civilization that made foundational contributions to philosophy, democracy, theater, and athletics between 800 BC and 31 BC.",
+        links: ["Theater", "Athletics", "Poetry"],
+      },
+      "Amazon": {
+        blurb: "The world's largest tropical rainforest, spanning nine South American countries, home to incredible biodiversity.",
+        links: ["Brazil", "Science", "Nature"],
+      },
+      "Science": {
+        blurb: "The systematic study of the natural world, from ancient Greek philosophy to modern research driving technology and culture.",
+        links: ["Ancient Greece", "Nature", "London"],
+      },
+      "Nature": {
+        blurb: "The phenomena of the physical world collectively, including plants, animals, and the landscape, inspiring art and poetry for millennia.",
+        links: ["Poetry", "Amazon", "Science"],
       },
       "Shakespeare": {
-        blurb: "William Shakespeare (1564–1616) was an English playwright and poet, widely regarded as the greatest writer in the English language. Author of 37 plays and 154 sonnets.",
-        links: {},
+        blurb: "William Shakespeare (1564–1616), widely regarded as the greatest writer in the English language, author of 37 plays and 154 sonnets.",
+        links: ["Globe Theatre", "Poetry", "Elizabethan Era"],
       },
     },
   },
@@ -159,66 +158,67 @@ const puzzles = [
     id: 3,
     start: "Dinosaurs",
     target: "Smartphone",
-    par: 5,
+    par: 4,
     articles: {
       "Dinosaurs": {
-        blurb: "A group of reptiles that dominated Earth for over 160 million years. Their extinction approximately 66 million years ago was caused by a massive asteroid impact.",
-        links: {
-          "Fossil": true,
-          "Tyrannosaurus Rex": false,
-          "Jurassic Period": false,
-          "Asteroid": false,
-          "Reptile": false,
-          "Evolution": false,
-        },
+        blurb: "Reptiles that dominated Earth for 160 million years before a massive asteroid impact caused their extinction 66 million years ago.",
+        links: ["Fossil", "Evolution", "Asteroid", "Museum"],
       },
       "Fossil": {
-        blurb: "Preserved remains of ancient organisms found in sedimentary rock. The study of fossils, paleontology, relies heavily on geological dating methods and modern scientific instruments.",
-        links: {
-          "Geology": false,
-          "Museum": false,
-          "Science": true,
-          "Amber": false,
-          "Carbon Dating": false,
-          "Sedimentary Rock": false,
-        },
+        blurb: "Preserved remains of ancient organisms found in rock, studied through paleontology using geological dating and modern instruments.",
+        links: ["Science", "Museum", "Evolution", "Dinosaurs"],
+      },
+      "Evolution": {
+        blurb: "The process by which species change over generations through natural selection, first described by Charles Darwin.",
+        links: ["Science", "Biology", "Fossil", "Dinosaurs"],
+      },
+      "Asteroid": {
+        blurb: "Rocky bodies orbiting the Sun, one of which struck Earth 66 million years ago creating the Chicxulub crater.",
+        links: ["Space", "Science", "Dinosaurs"],
+      },
+      "Museum": {
+        blurb: "Institutions that collect and display objects of scientific, artistic, or historical importance for public education.",
+        links: ["Fossil", "Science", "Technology"],
       },
       "Science": {
-        blurb: "The systematic study of the natural world through observation and experiment. Scientific advancement has driven every major technological revolution in human history.",
-        links: {
-          "Electricity": true,
-          "Physics": false,
-          "Scientific Method": false,
-          "Chemistry": false,
-          "Biology": false,
-          "Mathematics": false,
-        },
+        blurb: "The systematic study of the natural world through observation and experiment, driving every major technological revolution.",
+        links: ["Electricity", "Biology", "Space", "Technology"],
+      },
+      "Biology": {
+        blurb: "The study of living organisms and their interactions, from microscopic cells to entire ecosystems and evolutionary history.",
+        links: ["Evolution", "Science", "Chemistry"],
+      },
+      "Space": {
+        blurb: "The vast expanse beyond Earth's atmosphere, explored through telescopes, satellites, and spacecraft carrying advanced electronics.",
+        links: ["Asteroid", "Technology", "Satellite"],
       },
       "Electricity": {
-        blurb: "A form of energy resulting from charged particles. The harnessing of electricity in the 19th century led to transformative inventions including the telegraph, light bulb, and eventually the transistor.",
-        links: {
-          "Transistor": true,
-          "Lightning": false,
-          "Power Grid": false,
-          "Thomas Edison": false,
-          "Battery": false,
-          "Copper Wire": false,
-        },
+        blurb: "Energy from charged particles, harnessed in the 19th century to create transformative inventions from light bulbs to transistors.",
+        links: ["Transistor", "Technology", "Science"],
+      },
+      "Technology": {
+        blurb: "The application of scientific knowledge for practical purposes, from stone tools to the digital devices that define modern life.",
+        links: ["Smartphone", "Computer", "Electricity", "Satellite"],
       },
       "Transistor": {
-        blurb: "A semiconductor device that amplifies or switches electronic signals. Invented in 1947 at Bell Labs, the transistor is the fundamental building block of all modern electronic devices.",
-        links: {
-          "Smartphone": true,
-          "Silicon": false,
-          "Computer Chip": false,
-          "Bell Labs": false,
-          "Semiconductor": false,
-          "Circuit Board": false,
-        },
+        blurb: "A semiconductor device invented in 1947 at Bell Labs, the fundamental building block of all modern electronic devices.",
+        links: ["Computer", "Smartphone", "Electricity"],
+      },
+      "Computer": {
+        blurb: "A programmable electronic device that processes data, evolving from room-sized mainframes to powerful handheld devices.",
+        links: ["Smartphone", "Transistor", "Technology"],
+      },
+      "Chemistry": {
+        blurb: "The study of matter and its properties, reactions, and transformations, essential to materials science and electronics.",
+        links: ["Science", "Electricity", "Biology"],
+      },
+      "Satellite": {
+        blurb: "An artificial object in orbit, enabling communication, GPS, and weather monitoring using advanced electronic systems.",
+        links: ["Space", "Technology", "Computer"],
       },
       "Smartphone": {
-        blurb: "A handheld personal computer with a touchscreen interface, combining a mobile phone with computing capabilities. Over 6 billion people worldwide now use smartphones.",
-        links: {},
+        blurb: "A handheld personal computer with a touchscreen interface, combining a phone with computing power used by over 6 billion people.",
+        links: ["Computer", "Technology", "Transistor"],
       },
     },
   },
@@ -229,52 +229,64 @@ const puzzles = [
     par: 4,
     articles: {
       "Chocolate": {
-        blurb: "A food made from roasted cacao beans, originally cultivated by the ancient Aztec and Maya civilizations of Mesoamerica, who considered it a divine gift.",
-        links: {
-          "Mesoamerica": true,
-          "Cacao": false,
-          "Sugar": false,
-          "Switzerland": false,
-          "Dessert": false,
-          "Candy": false,
-        },
+        blurb: "A food made from roasted cacao beans, originally cultivated by the Aztec and Maya civilizations of Mesoamerica.",
+        links: ["Mesoamerica", "Switzerland", "Sugar", "Trade"],
       },
       "Mesoamerica": {
-        blurb: "A historical region stretching from central Mexico to Central America, home to advanced civilizations. These cultures developed sophisticated knowledge of astronomy, mathematics, and geography.",
-        links: {
-          "Geography": true,
-          "Aztec Empire": false,
-          "Maya Civilization": false,
-          "Pyramid": false,
-          "Corn": false,
-          "Calendar": false,
-        },
+        blurb: "A historical region from central Mexico to Central America, home to advanced civilizations with knowledge of astronomy and geography.",
+        links: ["Geography", "Aztec Empire", "Trade", "Chocolate"],
+      },
+      "Switzerland": {
+        blurb: "A mountainous Central European country famous for chocolate, watches, banking, and its stunning Alpine peaks.",
+        links: ["Alps", "Europe", "Chocolate", "Geography"],
+      },
+      "Sugar": {
+        blurb: "A sweet crystalline substance extracted from sugarcane or beet, central to global trade routes for centuries.",
+        links: ["Trade", "Agriculture", "Chocolate"],
+      },
+      "Trade": {
+        blurb: "The exchange of goods and services, which historically connected distant civilizations via sea routes and overland paths.",
+        links: ["Asia", "Europe", "Sugar", "Mesoamerica"],
+      },
+      "Aztec Empire": {
+        blurb: "A civilization in central Mexico (1300–1521) known for monumental architecture, astronomy, and advanced agriculture.",
+        links: ["Mesoamerica", "Agriculture", "Geography"],
       },
       "Geography": {
-        blurb: "The study of Earth's landscapes, environments, and the relationships between people and their environments. Physical geography examines natural features including the world's great mountain ranges.",
-        links: {
-          "Himalayas": true,
-          "Continent": false,
-          "Climate": false,
-          "Ocean": false,
-          "Map": false,
-          "River": false,
-        },
+        blurb: "The study of Earth's landscapes and environments, examining natural features from ocean trenches to the world's tallest peaks.",
+        links: ["Himalayas", "Asia", "Alps", "Mesoamerica"],
+      },
+      "Alps": {
+        blurb: "Europe's highest mountain range, stretching across eight countries, a training ground for mountaineers worldwide.",
+        links: ["Mountain Climbing", "Switzerland", "Europe"],
+      },
+      "Europe": {
+        blurb: "A continent with diverse cultures and landscapes, connected to Asia by land and to the world through centuries of exploration.",
+        links: ["Asia", "Switzerland", "Alps", "Trade"],
+      },
+      "Asia": {
+        blurb: "The largest continent, home to the Himalayas and diverse civilizations spanning thousands of years of history.",
+        links: ["Himalayas", "Nepal", "Geography", "Trade"],
+      },
+      "Agriculture": {
+        blurb: "The cultivation of crops and raising of animals, enabling civilizations from Mesoamerica to the Himalayan foothills.",
+        links: ["Nepal", "Mesoamerica", "Sugar"],
       },
       "Himalayas": {
-        blurb: "The highest mountain range in the world, stretching across five countries in Asia. It contains all 14 peaks exceeding 8,000 meters, including the tallest mountain on Earth.",
-        links: {
-          "Mount Everest": true,
-          "Nepal": false,
-          "Tibet": false,
-          "Glacier": false,
-          "K2": false,
-          "Tectonic Plates": false,
-        },
+        blurb: "The highest mountain range in the world, containing all 14 peaks over 8,000 meters, stretching across five Asian countries.",
+        links: ["Mount Everest", "Nepal", "Mountain Climbing", "Asia"],
+      },
+      "Nepal": {
+        blurb: "A landlocked country between China and India, home to eight of the world's ten tallest mountains including the highest.",
+        links: ["Mount Everest", "Himalayas", "Asia", "Agriculture"],
+      },
+      "Mountain Climbing": {
+        blurb: "The sport of ascending mountains, with the ultimate prize being the summit of the world's tallest peak.",
+        links: ["Mount Everest", "Himalayas", "Alps", "Nepal"],
       },
       "Mount Everest": {
-        blurb: "At 8,849 meters, the highest point on Earth. First summited by Edmund Hillary and Tenzing Norgay in 1953. Located on the border of Nepal and Tibet.",
-        links: {},
+        blurb: "At 8,849 meters, the highest point on Earth, first summited by Edmund Hillary and Tenzing Norgay in 1953.",
+        links: ["Himalayas", "Nepal", "Mountain Climbing"],
       },
     },
   },
@@ -285,52 +297,60 @@ const puzzles = [
     par: 4,
     articles: {
       "Jazz": {
-        blurb: "A music genre that originated in the African American communities of New Orleans in the late 19th century. Jazz is characterized by improvisation, syncopation, and swing.",
-        links: {
-          "New Orleans": false,
-          "Music": true,
-          "Saxophone": false,
-          "Blues": false,
-          "Louis Armstrong": false,
-          "Improvisation": false,
-        },
+        blurb: "A music genre originating in African American communities of New Orleans, characterized by improvisation and swing.",
+        links: ["Music", "New Orleans", "Blues", "Culture"],
       },
       "Music": {
-        blurb: "An art form combining vocal or instrumental sounds for expression. The music industry has been repeatedly transformed by technology, from vinyl records to radio to digital formats.",
-        links: {
-          "Radio": true,
-          "Piano": false,
-          "Orchestra": false,
-          "Rhythm": false,
-          "Concert": false,
-          "Vinyl Record": false,
-        },
+        blurb: "An art form combining sounds for expression, repeatedly transformed by technology from vinyl records to streaming.",
+        links: ["Radio", "Vinyl Record", "Culture", "Jazz"],
+      },
+      "New Orleans": {
+        blurb: "A Louisiana city known as the birthplace of jazz, with a vibrant culture shaped by French, African, and American influences.",
+        links: ["Jazz", "Culture", "America"],
+      },
+      "Blues": {
+        blurb: "An African American music genre from the Deep South, influencing jazz, rock, and virtually all modern popular music.",
+        links: ["Jazz", "Music", "Culture"],
+      },
+      "Culture": {
+        blurb: "The social behavior, norms, and knowledge of human societies, transmitted through art, language, and communication technology.",
+        links: ["Music", "Television", "Radio", "New Orleans"],
       },
       "Radio": {
-        blurb: "Technology for transmitting signals using electromagnetic waves. First demonstrated in the 1890s, radio revolutionized communication and became the foundation for modern telecommunications.",
-        links: {
-          "Telecommunications": true,
-          "FM Frequency": false,
-          "Antenna": false,
-          "Broadcast": false,
-          "Guglielmo Marconi": false,
-          "Podcast": false,
-        },
+        blurb: "Technology for transmitting signals via electromagnetic waves, revolutionizing communication and becoming the foundation of telecommunications.",
+        links: ["Telecommunications", "Television", "Music", "Signal"],
+      },
+      "Vinyl Record": {
+        blurb: "An analog sound storage medium that dominated music distribution for decades before being supplanted by digital formats.",
+        links: ["Music", "Technology", "Radio"],
+      },
+      "Television": {
+        blurb: "A system for transmitting visual images and sound, evolving from broadcast signals to internet-based streaming platforms.",
+        links: ["Radio", "Technology", "Signal", "Culture"],
       },
       "Telecommunications": {
-        blurb: "The transmission of information over distances using electronic means. From telegraph to telephone to fiber optics, each advance built toward the global network that connects billions of devices.",
-        links: {
-          "Internet": true,
-          "Telephone": false,
-          "Fiber Optics": false,
-          "Satellite": false,
-          "5G": false,
-          "Telegraph": false,
-        },
+        blurb: "The transmission of information over distances, from telegraph to telephone to the global network connecting billions of devices.",
+        links: ["Internet", "Radio", "Signal", "Technology"],
+      },
+      "Signal": {
+        blurb: "An electromagnetic or electrical impulse used to convey information, the fundamental unit of all communication systems.",
+        links: ["Telecommunications", "Radio", "Technology"],
+      },
+      "Technology": {
+        blurb: "The application of scientific knowledge for practical purposes, powering the digital revolution and global connectivity.",
+        links: ["Internet", "Telecommunications", "Computer"],
+      },
+      "America": {
+        blurb: "A country shaped by innovation, from the birth of jazz in New Orleans to Silicon Valley's creation of the digital age.",
+        links: ["New Orleans", "Computer", "Technology"],
+      },
+      "Computer": {
+        blurb: "A programmable electronic device, from 1950s mainframes to today's machines that form the backbone of global networks.",
+        links: ["Internet", "Technology", "America"],
       },
       "Internet": {
-        blurb: "A global network of interconnected computers. Originally developed as ARPANET by the US Department of Defense in the 1960s, it now connects over 5 billion users worldwide.",
-        links: {},
+        blurb: "A global network of interconnected computers, originally ARPANET, now connecting over 5 billion users worldwide.",
+        links: ["Telecommunications", "Computer", "Technology"],
       },
     },
   },
@@ -341,41 +361,56 @@ const puzzles = [
     par: 4,
     articles: {
       "Penguin": {
-        blurb: "Flightless seabirds found almost exclusively in the Southern Hemisphere. Penguins are highly adapted to aquatic life and have been featured prominently in popular documentaries.",
-        links: {
-          "Documentary": true,
-          "Antarctica": false,
-          "Bird": false,
-          "Ocean": false,
-          "Ice": false,
-          "Emperor Penguin": false,
-        },
+        blurb: "Flightless seabirds of the Southern Hemisphere, highly adapted to aquatic life and stars of popular nature documentaries.",
+        links: ["Antarctica", "Documentary", "Ocean", "Wildlife"],
+      },
+      "Antarctica": {
+        blurb: "Earth's southernmost continent, a frozen wilderness that has been the subject of countless expeditions and films.",
+        links: ["Penguin", "Ocean", "Documentary", "Exploration"],
+      },
+      "Ocean": {
+        blurb: "The vast bodies of saltwater covering 71% of Earth's surface, home to incredible marine life featured in film.",
+        links: ["Antarctica", "Wildlife", "Documentary"],
+      },
+      "Wildlife": {
+        blurb: "Animals in their natural habitats, the subject of a booming documentary industry that generates billions in revenue.",
+        links: ["Documentary", "Penguin", "Ocean", "Nature"],
       },
       "Documentary": {
-        blurb: "A non-fiction film genre that documents reality for educational or historical purposes. Nature documentaries like March of the Penguins and Planet Earth became box-office and streaming hits.",
-        links: {
-          "Film Industry": true,
-          "Camera": false,
-          "Television": false,
-          "Journalism": false,
-          "David Attenborough": false,
-          "Netflix": false,
-        },
+        blurb: "Non-fiction films documenting reality for education or entertainment, with nature docs like Planet Earth becoming global hits.",
+        links: ["Film Industry", "Television", "Wildlife", "Camera"],
+      },
+      "Nature": {
+        blurb: "The physical world and its phenomena, an endless source of inspiration for filmmakers, artists, and storytellers.",
+        links: ["Wildlife", "Documentary", "California"],
+      },
+      "Exploration": {
+        blurb: "The act of traveling to unfamiliar places to learn, from Antarctic expeditions to the exploration of storytelling frontiers.",
+        links: ["Antarctica", "Film Industry", "Camera"],
       },
       "Film Industry": {
-        blurb: "The global commercial sector of filmmaking, from production to distribution. The American film industry, centered in Southern California, has dominated global cinema since the early 1900s.",
-        links: {
-          "Hollywood": true,
-          "Box Office": false,
-          "Director": false,
-          "Animation": false,
-          "Oscars": false,
-          "Screenplay": false,
-        },
+        blurb: "The global commercial sector of filmmaking, with the American industry centered in Southern California dominating global cinema.",
+        links: ["Hollywood", "Camera", "Television", "Documentary"],
+      },
+      "Camera": {
+        blurb: "A device for capturing images, essential to both documentary filmmaking and the motion picture industry.",
+        links: ["Film Industry", "Documentary", "Television"],
+      },
+      "Television": {
+        blurb: "A medium for broadcasting visual content, evolving from antennas to streaming, with studios clustered near film production hubs.",
+        links: ["Film Industry", "Documentary", "Entertainment", "Camera"],
+      },
+      "Entertainment": {
+        blurb: "Activities providing amusement, with the modern entertainment capital of the world being a neighborhood in Los Angeles.",
+        links: ["Hollywood", "Film Industry", "Television", "California"],
+      },
+      "California": {
+        blurb: "A US state on the Pacific coast, home to Silicon Valley, stunning natural parks, and the center of American filmmaking.",
+        links: ["Hollywood", "Entertainment", "Nature"],
       },
       "Hollywood": {
-        blurb: "A neighborhood in Los Angeles, California, synonymous with the American entertainment industry. Home to major film studios, the Hollywood Sign, and the Walk of Fame.",
-        links: {},
+        blurb: "A neighborhood in Los Angeles synonymous with the American entertainment industry, home to major studios and the Walk of Fame.",
+        links: ["Film Industry", "Entertainment", "California"],
       },
     },
   },
@@ -386,41 +421,64 @@ const puzzles = [
     par: 4,
     articles: {
       "Coffee": {
-        blurb: "A brewed drink prepared from roasted coffee beans, originally discovered in Ethiopia. Coffee contains caffeine, a natural stimulant that has been studied extensively by scientists.",
-        links: {
-          "Ethiopia": false,
-          "Caffeine": false,
-          "Scientific Research": true,
-          "Bean": false,
-          "Espresso": false,
-          "Morning Routine": false,
-        },
+        blurb: "A brewed drink from roasted beans discovered in Ethiopia, containing caffeine that has been extensively studied by scientists.",
+        links: ["Ethiopia", "Caffeine", "Trade", "Agriculture"],
       },
-      "Scientific Research": {
-        blurb: "The systematic investigation of phenomena to establish facts and reach new conclusions. Government-funded research institutions like NASA conduct research spanning from biology to planetary science.",
-        links: {
-          "NASA": true,
-          "Laboratory": false,
-          "University": false,
-          "Hypothesis": false,
-          "Peer Review": false,
-          "Grant Funding": false,
-        },
+      "Ethiopia": {
+        blurb: "An East African country with ancient history, the origin of coffee and one of the cradles of human civilization.",
+        links: ["Africa", "Coffee", "Agriculture"],
+      },
+      "Caffeine": {
+        blurb: "A natural stimulant found in coffee and tea, one of the most studied compounds in pharmacology and biology.",
+        links: ["Science", "Coffee", "Biology"],
+      },
+      "Trade": {
+        blurb: "The exchange of goods across regions, from the ancient coffee trade routes to modern global supply chains.",
+        links: ["Agriculture", "Technology", "Ethiopia"],
+      },
+      "Agriculture": {
+        blurb: "The cultivation of crops, from coffee plantations in Ethiopia to experimental farming research funded by government agencies.",
+        links: ["Science", "Ethiopia", "Trade"],
+      },
+      "Africa": {
+        blurb: "The second-largest continent, with a rich geological history and clear skies that make it a target for astronomical observatories.",
+        links: ["Ethiopia", "Astronomy", "Science"],
+      },
+      "Science": {
+        blurb: "The systematic investigation of the natural world, with government institutions conducting research from biology to planetary exploration.",
+        links: ["NASA", "Biology", "Astronomy", "Technology"],
+      },
+      "Biology": {
+        blurb: "The study of living organisms, from the chemistry of caffeine to astrobiology investigating the possibility of life beyond Earth.",
+        links: ["Science", "Caffeine", "Astrobiology"],
+      },
+      "Astronomy": {
+        blurb: "The study of celestial objects and phenomena, from ancient stargazing to modern spacecraft visiting other planets.",
+        links: ["NASA", "Space", "Science", "Africa"],
+      },
+      "Technology": {
+        blurb: "Applied scientific knowledge powering everything from agricultural tools to the rockets that carry rovers to other worlds.",
+        links: ["NASA", "Science", "Spacecraft"],
       },
       "NASA": {
-        blurb: "America's space agency, responsible for the civilian space program and aerospace research. NASA's Mars exploration program has sent multiple rovers and orbiters to study the Red Planet.",
-        links: {
-          "Mars": true,
-          "Astronaut": false,
-          "Space Shuttle": false,
-          "Satellite": false,
-          "Kennedy Space Center": false,
-          "Apollo Program": false,
-        },
+        blurb: "America's space agency, running the Mars exploration program with multiple rovers and orbiters studying the Red Planet.",
+        links: ["Mars", "Space", "Spacecraft", "Astrobiology"],
+      },
+      "Space": {
+        blurb: "The vast expanse beyond Earth's atmosphere, explored by telescopes and spacecraft seeking to understand our solar system.",
+        links: ["Mars", "NASA", "Astronomy"],
+      },
+      "Spacecraft": {
+        blurb: "Vehicles designed for travel beyond Earth's atmosphere, from Apollo capsules to the Perseverance rover currently on Mars.",
+        links: ["Mars", "NASA", "Space"],
+      },
+      "Astrobiology": {
+        blurb: "The study of life's origins and the search for life beyond Earth, with Mars being the prime candidate in our solar system.",
+        links: ["Mars", "Biology", "NASA"],
       },
       "Mars": {
-        blurb: "The fourth planet from the Sun, often called the Red Planet due to iron oxide on its surface. NASA's Perseverance rover is currently exploring Jezero Crater searching for signs of ancient life.",
-        links: {},
+        blurb: "The fourth planet from the Sun, called the Red Planet, where NASA's Perseverance rover searches for signs of ancient life.",
+        links: ["NASA", "Space", "Astrobiology"],
       },
     },
   },
@@ -428,66 +486,75 @@ const puzzles = [
     id: 8,
     start: "Samurai",
     target: "Bitcoin",
-    par: 5,
+    par: 4,
     articles: {
       "Samurai": {
-        blurb: "The warrior nobility of medieval and early-modern Japan. Samurai followed bushido, a strict code of honor, and were central to Japanese feudal society until the Meiji Restoration modernized the country.",
-        links: {
-          "Japan": true,
-          "Katana": false,
-          "Bushido": false,
-          "Shogun": false,
-          "Feudalism": false,
-          "Martial Arts": false,
-        },
+        blurb: "The warrior nobility of medieval Japan who followed bushido, central to feudal society until the Meiji Restoration modernized the country.",
+        links: ["Japan", "Martial Arts", "Feudalism", "Katana"],
       },
       "Japan": {
-        blurb: "An island nation in East Asia known for blending ancient traditions with cutting-edge technology. Post-WWII Japan became a global leader in electronics, automotive, and computing innovation.",
-        links: {
-          "Technology": true,
-          "Tokyo": false,
-          "Sushi": false,
-          "Anime": false,
-          "Mount Fuji": false,
-          "Emperor": false,
-        },
+        blurb: "An island nation blending ancient traditions with cutting-edge technology, a global leader in electronics and computing innovation.",
+        links: ["Technology", "Tokyo", "Samurai", "Electronics"],
+      },
+      "Martial Arts": {
+        blurb: "Combat practices developed across Asia for self-defense, military training, and spiritual development over thousands of years.",
+        links: ["Japan", "Samurai", "Discipline"],
+      },
+      "Feudalism": {
+        blurb: "A medieval social system of lords and vassals, eventually replaced by centralized governments and modern economic systems.",
+        links: ["Samurai", "Economics", "Japan"],
+      },
+      "Katana": {
+        blurb: "A curved Japanese sword crafted with extraordinary metallurgy, requiring mastery of materials science and forging techniques.",
+        links: ["Samurai", "Japan", "Engineering"],
+      },
+      "Tokyo": {
+        blurb: "Japan's capital and the world's largest metropolitan area, a global hub for technology, finance, and innovation.",
+        links: ["Japan", "Technology", "Economics"],
       },
       "Technology": {
-        blurb: "The application of scientific knowledge for practical purposes. The digital revolution of the late 20th century gave rise to personal computers, the internet, and entirely new forms of currency.",
-        links: {
-          "Cryptography": true,
-          "Computer": false,
-          "Innovation": false,
-          "Artificial Intelligence": false,
-          "Robot": false,
-          "Silicon Valley": false,
-        },
+        blurb: "Applied scientific knowledge driving the digital revolution, from transistors to the internet and decentralized digital systems.",
+        links: ["Cryptography", "Electronics", "Internet", "Japan"],
+      },
+      "Electronics": {
+        blurb: "The branch of physics dealing with circuits and devices, with Japan pioneering consumer electronics from radios to gaming systems.",
+        links: ["Technology", "Computer", "Japan", "Engineering"],
+      },
+      "Discipline": {
+        blurb: "The practice of training to follow a code of behavior, valued in martial arts, military strategy, and mathematical problem-solving.",
+        links: ["Martial Arts", "Mathematics", "Samurai"],
+      },
+      "Economics": {
+        blurb: "The study of production, distribution, and consumption of goods, evolving to include digital currencies and decentralized finance.",
+        links: ["Blockchain", "Tokyo", "Feudalism"],
+      },
+      "Engineering": {
+        blurb: "The application of science to design and build systems, from ancient sword-forging to modern computer architecture.",
+        links: ["Technology", "Electronics", "Computer"],
+      },
+      "Internet": {
+        blurb: "A global network connecting billions of devices, the infrastructure layer enabling digital communication and cryptocurrency transactions.",
+        links: ["Cryptography", "Computer", "Technology"],
       },
       "Cryptography": {
-        blurb: "The practice of secure communication using codes and ciphers. Modern cryptography underpins internet security, digital signatures, and decentralized digital currencies.",
-        links: {
-          "Blockchain": true,
-          "Encryption": false,
-          "Alan Turing": false,
-          "Password": false,
-          "Cipher": false,
-          "RSA Algorithm": false,
-        },
+        blurb: "The practice of secure communication using codes and ciphers, underpinning internet security and decentralized digital currencies.",
+        links: ["Blockchain", "Mathematics", "Internet"],
+      },
+      "Mathematics": {
+        blurb: "The abstract science of number, quantity, and space, providing the theoretical foundation for encryption and consensus algorithms.",
+        links: ["Cryptography", "Computer", "Discipline"],
+      },
+      "Computer": {
+        blurb: "A programmable device that processes data, the hardware backbone of the internet and cryptocurrency mining operations.",
+        links: ["Internet", "Blockchain", "Technology"],
       },
       "Blockchain": {
-        blurb: "A distributed digital ledger that records transactions across many computers. First conceptualized in 2008 by the pseudonymous Satoshi Nakamoto as the technology underlying a new digital currency.",
-        links: {
-          "Bitcoin": true,
-          "Ethereum": false,
-          "Decentralization": false,
-          "Mining": false,
-          "Smart Contract": false,
-          "Ledger": false,
-        },
+        blurb: "A distributed digital ledger recording transactions across many computers, conceptualized in 2008 by the pseudonymous Satoshi Nakamoto.",
+        links: ["Bitcoin", "Cryptography", "Economics"],
       },
       "Bitcoin": {
-        blurb: "The first decentralized cryptocurrency, created in 2009. Bitcoin enables peer-to-peer transactions without intermediaries, using blockchain technology to maintain a public ledger of all transactions.",
-        links: {},
+        blurb: "The first decentralized cryptocurrency, enabling peer-to-peer transactions via blockchain without intermediaries since 2009.",
+        links: ["Blockchain", "Cryptography", "Economics"],
       },
     },
   },
@@ -498,52 +565,64 @@ const puzzles = [
     par: 4,
     articles: {
       "Honey Bee": {
-        blurb: "A flying insect known for pollination and honey production. Bees are vital to agriculture, pollinating roughly one-third of the food crops humans consume worldwide.",
-        links: {
-          "Agriculture": true,
-          "Honey": false,
-          "Pollination": false,
-          "Hive": false,
-          "Queen Bee": false,
-          "Beekeeper": false,
-        },
+        blurb: "A flying insect vital to agriculture, pollinating roughly one-third of food crops and producing honey consumed worldwide.",
+        links: ["Agriculture", "Pollination", "Honey", "Nature"],
       },
       "Agriculture": {
-        blurb: "The practice of cultivating plants and raising animals for food. France has been Europe's largest agricultural producer for centuries, with its diverse climate and fertile plains.",
-        links: {
-          "France": true,
-          "Farming": false,
-          "Wheat": false,
-          "Irrigation": false,
-          "Tractor": false,
-          "Soil": false,
-        },
+        blurb: "The cultivation of crops and livestock, with France being Europe's largest agricultural producer for centuries.",
+        links: ["France", "Nature", "Pollination", "Honey Bee"],
+      },
+      "Pollination": {
+        blurb: "The transfer of pollen enabling plant reproduction, essential to both wild ecosystems and cultivated gardens worldwide.",
+        links: ["Nature", "Agriculture", "Garden", "Honey Bee"],
+      },
+      "Honey": {
+        blurb: "A sweet substance produced by bees, used in food and medicine for millennia across European and Asian cultures.",
+        links: ["Honey Bee", "Agriculture", "Trade"],
+      },
+      "Nature": {
+        blurb: "The physical world and its phenomena, inspiring art, architecture, and engineering achievements across human civilization.",
+        links: ["Architecture", "Garden", "Agriculture", "Pollination"],
       },
       "France": {
-        blurb: "A country in Western Europe known for its cuisine, wine, fashion, and iconic landmarks. France is the world's most visited country, attracting over 90 million tourists annually to see its architectural marvels.",
-        links: {
-          "Paris": true,
-          "Wine": false,
-          "French Revolution": false,
-          "Napoleon": false,
-          "Louvre": false,
-          "Baguette": false,
-        },
+        blurb: "A Western European country known for cuisine, wine, and iconic landmarks, the most visited country in the world.",
+        links: ["Paris", "Wine", "Architecture", "Agriculture"],
+      },
+      "Trade": {
+        blurb: "The exchange of goods between regions, with France historically at the center of European commerce and world fairs.",
+        links: ["France", "World Fair", "Honey"],
+      },
+      "Wine": {
+        blurb: "An alcoholic beverage from fermented grapes, with France renowned for producing the world's most celebrated varieties.",
+        links: ["France", "Agriculture", "Paris"],
+      },
+      "Garden": {
+        blurb: "A cultivated space for growing plants, with the formal French garden tradition influencing park design around the world.",
+        links: ["Paris", "Nature", "Pollination", "Architecture"],
+      },
+      "Architecture": {
+        blurb: "The art and science of designing buildings and structures, from ancient temples to revolutionary iron constructions.",
+        links: ["Eiffel Tower", "Iron", "Paris", "Nature"],
       },
       "Paris": {
-        blurb: "The capital of France, known as the City of Light. Paris is home to world-famous landmarks including Notre-Dame, the Arc de Triomphe, and its most iconic iron lattice structure built for the 1889 World's Fair.",
-        links: {
-          "Eiffel Tower": true,
-          "Seine River": false,
-          "Croissant": false,
-          "Metro": false,
-          "Champs-Élysées": false,
-          "Montmartre": false,
-        },
+        blurb: "The capital of France, the City of Light, home to Notre-Dame, the Louvre, and an iconic iron tower built for the 1889 World's Fair.",
+        links: ["Eiffel Tower", "France", "Architecture", "World Fair"],
+      },
+      "Iron": {
+        blurb: "A metallic element essential to construction, used to build bridges, railways, and a famous lattice tower standing 330 meters tall.",
+        links: ["Eiffel Tower", "Architecture", "Engineering"],
+      },
+      "Engineering": {
+        blurb: "The application of science to design structures and systems, exemplified by Gustave Eiffel's revolutionary construction techniques.",
+        links: ["Eiffel Tower", "Iron", "Architecture"],
+      },
+      "World Fair": {
+        blurb: "International exhibitions showcasing cultural and industrial achievements, with the 1889 Paris expo commissioning an iconic tower.",
+        links: ["Eiffel Tower", "Paris", "Trade"],
       },
       "Eiffel Tower": {
-        blurb: "A wrought-iron lattice tower built in 1889 by Gustave Eiffel for the World's Fair. At 330 meters tall, it is the most visited paid monument in the world, attracting nearly 7 million visitors annually.",
-        links: {},
+        blurb: "A wrought-iron lattice tower built in 1889 by Gustave Eiffel for the World's Fair, the most visited paid monument in the world.",
+        links: ["Paris", "Architecture", "Iron"],
       },
     },
   },
@@ -554,52 +633,72 @@ const puzzles = [
     par: 4,
     articles: {
       "Volcano": {
-        blurb: "A rupture in Earth's crust that allows hot lava, volcanic ash, and gases to escape. Volcanic activity has shaped Earth's surface and atmosphere over billions of years.",
-        links: {
-          "Earth": true,
-          "Lava": false,
-          "Pompeii": false,
-          "Ring of Fire": false,
-          "Magma": false,
-          "Eruption": false,
-        },
+        blurb: "A rupture in Earth's crust allowing lava and gases to escape, shaping the planet's surface over billions of years.",
+        links: ["Earth", "Geology", "Lava", "Pompeii"],
       },
       "Earth": {
-        blurb: "The third planet from the Sun and the only known planet to harbor life. The origin of life on Earth is one of the great questions studied across biology, chemistry, and molecular science.",
-        links: {
-          "Life": true,
-          "Atmosphere": false,
-          "Continent": false,
-          "Moon": false,
-          "Ocean": false,
-          "Gravity": false,
-        },
+        blurb: "The third planet from the Sun and the only known world to harbor life, a great mystery studied across many sciences.",
+        links: ["Life", "Geology", "Ocean", "Atmosphere"],
+      },
+      "Geology": {
+        blurb: "The study of Earth's physical structure, from volcanic rock layers to the fossil record revealing ancient organisms.",
+        links: ["Earth", "Fossil", "Volcano", "Chemistry"],
+      },
+      "Lava": {
+        blurb: "Molten rock that reaches Earth's surface during eruptions, its chemical composition studied by geologists and chemists.",
+        links: ["Volcano", "Chemistry", "Geology"],
+      },
+      "Pompeii": {
+        blurb: "An ancient Roman city buried by volcanic eruption in 79 AD, preserving a snapshot of life studied by historians and scientists.",
+        links: ["Volcano", "Archaeology", "Earth"],
+      },
+      "Ocean": {
+        blurb: "Vast saltwater bodies covering most of Earth, home to diverse life forms from microscopic organisms to massive whales.",
+        links: ["Life", "Earth", "Chemistry"],
+      },
+      "Atmosphere": {
+        blurb: "The layer of gases surrounding Earth, shaped by volcanic emissions and essential to the conditions that support life.",
+        links: ["Earth", "Chemistry", "Life"],
+      },
+      "Fossil": {
+        blurb: "Preserved remains of ancient organisms in rock, providing evidence of evolution and the molecular basis of living things.",
+        links: ["Evolution", "Geology", "Archaeology"],
+      },
+      "Archaeology": {
+        blurb: "The study of human history through excavation, increasingly using molecular analysis and genetic techniques.",
+        links: ["Fossil", "Pompeii", "Genetics"],
       },
       "Life": {
-        blurb: "The condition that distinguishes organisms from inorganic matter, characterized by growth, reproduction, and adaptation. All known life forms share a common molecular blueprint encoded in a double-helix molecule.",
-        links: {
-          "Cell": true,
-          "Evolution": false,
-          "Bacteria": false,
-          "Ecosystem": false,
-          "Photosynthesis": false,
-          "Protein": false,
-        },
+        blurb: "The condition distinguishing organisms from inorganic matter, characterized by growth, reproduction, and a shared molecular blueprint.",
+        links: ["Cell", "Evolution", "Biology", "Earth"],
+      },
+      "Chemistry": {
+        blurb: "The study of matter and its transformations, from volcanic minerals to the molecular structures within living cells.",
+        links: ["Molecule", "Biology", "Geology"],
+      },
+      "Evolution": {
+        blurb: "The process of species changing through natural selection, with all life sharing common ancestry encoded in genetic material.",
+        links: ["Genetics", "Life", "Biology", "Fossil"],
+      },
+      "Biology": {
+        blurb: "The study of living organisms, from cells and molecules to ecosystems, unified by the central role of genetic information.",
+        links: ["Cell", "Genetics", "Evolution", "Chemistry"],
       },
       "Cell": {
-        blurb: "The basic structural and functional unit of all living organisms. Each cell contains a nucleus housing the organism's complete genetic information in a molecule first described by Watson and Crick in 1953.",
-        links: {
-          "DNA": true,
-          "Nucleus": false,
-          "Mitochondria": false,
-          "Membrane": false,
-          "Stem Cell": false,
-          "Red Blood Cell": false,
-        },
+        blurb: "The basic unit of all living organisms, each containing a nucleus housing the complete genetic blueprint in a double-helix molecule.",
+        links: ["DNA", "Biology", "Molecule", "Life"],
+      },
+      "Molecule": {
+        blurb: "A group of atoms bonded together, from simple water to the complex double-helix that carries the code of life.",
+        links: ["DNA", "Chemistry", "Cell"],
+      },
+      "Genetics": {
+        blurb: "The study of heredity and variation, centered on the molecule that encodes instructions for all living organisms.",
+        links: ["DNA", "Evolution", "Biology"],
       },
       "DNA": {
-        blurb: "Deoxyribonucleic acid, a molecule that carries the genetic instructions for the development, functioning, and reproduction of all known living organisms. Its double-helix structure was discovered in 1953.",
-        links: {},
+        blurb: "Deoxyribonucleic acid, the molecule carrying genetic instructions for development and reproduction of all known living organisms.",
+        links: ["Genetics", "Cell", "Molecule"],
       },
     },
   },
@@ -607,55 +706,67 @@ const puzzles = [
     id: 11,
     start: "Pirate",
     target: "Satellite",
-    par: 5,
+    par: 4,
     articles: {
       "Pirate": {
-        blurb: "Seafaring criminals who attacked ships for plunder. The Golden Age of Piracy (1650s–1730s) saw pirates roaming the Caribbean and Atlantic, navigating by the stars.",
-        links: {
-          "Navigation": true,
-          "Caribbean": false,
-          "Treasure": false,
-          "Ship": false,
-          "Blackbeard": false,
-          "Skull and Crossbones": false,
-        },
+        blurb: "Seafaring criminals who attacked ships for plunder during the Golden Age of Piracy, navigating vast oceans by the stars.",
+        links: ["Navigation", "Ocean", "Caribbean", "Ship"],
       },
       "Navigation": {
-        blurb: "The process of determining position and planning routes. From celestial navigation using stars to magnetic compasses, navigation technology evolved dramatically with the launch of GPS systems.",
-        links: {
-          "GPS": true,
-          "Compass": false,
-          "Map": false,
-          "Sextant": false,
-          "North Star": false,
-          "Longitude": false,
-        },
+        blurb: "The process of determining position and planning routes, evolving from celestial observation to satellite-based GPS systems.",
+        links: ["GPS", "Stars", "Ocean", "Ship"],
+      },
+      "Ocean": {
+        blurb: "The vast bodies of saltwater covering most of Earth, crossed by pirates and now monitored by satellites from orbit.",
+        links: ["Navigation", "Pirate", "Ship", "Weather"],
+      },
+      "Caribbean": {
+        blurb: "A region of tropical islands in the Americas, infamous for piracy and now monitored by weather satellites for hurricanes.",
+        links: ["Pirate", "Ocean", "Weather"],
+      },
+      "Ship": {
+        blurb: "A large vessel for sea transport, from wooden pirate galleons to modern ships using satellite navigation systems.",
+        links: ["Navigation", "Ocean", "Pirate", "Technology"],
+      },
+      "Stars": {
+        blurb: "Luminous celestial objects used for navigation for millennia, now studied with space telescopes and orbiting observatories.",
+        links: ["Navigation", "Space", "Astronomy"],
       },
       "GPS": {
-        blurb: "The Global Positioning System, a satellite-based radionavigation system providing location and time information. Operated by the US Space Force, it relies on a constellation of at least 24 orbiting spacecraft.",
-        links: {
-          "Orbit": true,
-          "US Military": false,
-          "Location": false,
-          "Signal": false,
-          "Receiver": false,
-          "Coordinates": false,
-        },
+        blurb: "The Global Positioning System, providing location data using a constellation of at least 24 orbiting spacecraft.",
+        links: ["Satellite", "Orbit", "Navigation", "Technology"],
+      },
+      "Weather": {
+        blurb: "Atmospheric conditions at a given time, now predicted using data from orbiting observation platforms and computer models.",
+        links: ["Satellite", "Ocean", "Atmosphere"],
+      },
+      "Atmosphere": {
+        blurb: "The layer of gases surrounding Earth, studied by instruments on the ground and from orbiting platforms above.",
+        links: ["Weather", "Space", "Orbit"],
+      },
+      "Space": {
+        blurb: "The expanse beyond Earth's atmosphere, home to thousands of artificial objects launched since Sputnik in 1957.",
+        links: ["Orbit", "Satellite", "Stars", "Astronomy"],
+      },
+      "Astronomy": {
+        blurb: "The study of celestial objects, now aided by instruments placed in Earth orbit far above atmospheric interference.",
+        links: ["Stars", "Space", "Telescope"],
+      },
+      "Telescope": {
+        blurb: "An instrument for observing distant objects, with the most powerful ones orbiting Earth to avoid atmospheric distortion.",
+        links: ["Satellite", "Astronomy", "Space"],
+      },
+      "Technology": {
+        blurb: "Applied scientific knowledge, from compass navigation to the rockets that place communication platforms in orbit.",
+        links: ["GPS", "Satellite", "Ship"],
       },
       "Orbit": {
-        blurb: "The curved path of an object around a star, planet, or moon due to gravity. Earth orbit is home to thousands of artificial objects launched since Sputnik in 1957.",
-        links: {
-          "Satellite": true,
-          "Gravity": false,
-          "Space Station": false,
-          "Asteroid": false,
-          "Kepler": false,
-          "Trajectory": false,
-        },
+        blurb: "The curved path of an object around a body due to gravity, where thousands of artificial objects circle Earth.",
+        links: ["Satellite", "Space", "GPS"],
       },
       "Satellite": {
-        blurb: "An artificial object placed into orbit around Earth or another body. There are currently over 7,000 active satellites providing communication, weather monitoring, navigation, and scientific observation.",
-        links: {},
+        blurb: "An artificial object in orbit providing communication, weather monitoring, navigation, and scientific observation for over 7,000 active units.",
+        links: ["Orbit", "GPS", "Space"],
       },
     },
   },
@@ -666,52 +777,68 @@ const puzzles = [
     par: 4,
     articles: {
       "Sushi": {
-        blurb: "A Japanese dish featuring vinegared rice combined with seafood, vegetables, and sometimes tropical fruits. Sushi originated as a method of preserving fish in fermented rice across East and Southeast Asia.",
-        links: {
-          "Asia": true,
-          "Rice": false,
-          "Fish": false,
-          "Wasabi": false,
-          "Chef": false,
-          "Seaweed": false,
-        },
+        blurb: "A Japanese dish of vinegared rice with seafood, originating as a preservation method across East and Southeast Asia.",
+        links: ["Japan", "Asia", "Seafood", "Rice"],
+      },
+      "Japan": {
+        blurb: "An island nation known for blending tradition with innovation, its cuisine and culture influencing the world.",
+        links: ["Asia", "Sushi", "Buddhism", "Trade"],
       },
       "Asia": {
-        blurb: "The largest and most populous continent, home to diverse civilizations spanning thousands of years. The Indian subcontinent, in South Asia, produced some of the world's most remarkable architectural achievements.",
-        links: {
-          "India": true,
-          "China": false,
-          "Silk Road": false,
-          "Buddhism": false,
-          "Monsoon": false,
-          "Tiger": false,
-        },
+        blurb: "The largest continent, home to diverse civilizations and some of the world's most remarkable architectural achievements.",
+        links: ["India", "Japan", "Silk Road", "Buddhism"],
+      },
+      "Seafood": {
+        blurb: "Marine animals used as food, traded across ocean routes connecting Japan, Southeast Asia, and the Indian subcontinent.",
+        links: ["Trade", "Japan", "Ocean"],
+      },
+      "Rice": {
+        blurb: "A cereal grain and staple food for over half the world's population, cultivated across Asia for thousands of years.",
+        links: ["Agriculture", "Asia", "India"],
+      },
+      "Buddhism": {
+        blurb: "A religion founded in India that spread across Asia, influencing art, architecture, and culture from Japan to Sri Lanka.",
+        links: ["India", "Asia", "Japan", "Temple"],
+      },
+      "Trade": {
+        blurb: "The exchange of goods between civilizations, with the Silk Road connecting East Asia to India and beyond.",
+        links: ["Silk Road", "Seafood", "Japan"],
+      },
+      "Silk Road": {
+        blurb: "Ancient trade routes connecting East Asia to the Mediterranean, passing through India and facilitating cultural exchange.",
+        links: ["India", "Asia", "Trade", "Mughal Empire"],
       },
       "India": {
-        blurb: "A country in South Asia with over 1.4 billion people. India's rich history includes the Mughal Empire, whose rulers commissioned breathtaking monuments as expressions of love and power.",
-        links: {
-          "Mughal Empire": true,
-          "Hinduism": false,
-          "Bollywood": false,
-          "Ganges River": false,
-          "Cricket": false,
-          "Spice Trade": false,
-        },
+        blurb: "A South Asian country with over 1.4 billion people and a rich history including the Mughal Empire's breathtaking monuments.",
+        links: ["Mughal Empire", "Architecture", "Buddhism", "Agriculture"],
+      },
+      "Agriculture": {
+        blurb: "The cultivation of crops, essential to civilizations from rice paddies in Asia to the fertile plains of the Indian subcontinent.",
+        links: ["India", "Rice", "Asia"],
+      },
+      "Ocean": {
+        blurb: "Vast saltwater bodies connecting continents, enabling trade routes that linked Japan to India and the wider world.",
+        links: ["Trade", "Seafood", "Asia"],
+      },
+      "Temple": {
+        blurb: "A structure devoted to worship or meditation, with Hindu and Muslim architecture producing some of humanity's finest buildings.",
+        links: ["Architecture", "India", "Buddhism", "Mughal Empire"],
       },
       "Mughal Empire": {
-        blurb: "An empire that ruled much of the Indian subcontinent from 1526 to 1857. Emperor Shah Jahan commissioned the most famous monument of Mughal architecture as a mausoleum for his beloved wife Mumtaz Mahal.",
-        links: {
-          "Taj Mahal": true,
-          "Delhi": false,
-          "Mogul Painting": false,
-          "Persian Influence": false,
-          "Fort": false,
-          "Dynasty": false,
-        },
+        blurb: "A dynasty ruling India from 1526 to 1857, whose Emperor Shah Jahan built the most famous mausoleum in the world.",
+        links: ["Taj Mahal", "India", "Architecture", "Marble"],
+      },
+      "Architecture": {
+        blurb: "The art and science of designing buildings, with Mughal architecture producing some of humanity's most stunning structures.",
+        links: ["Taj Mahal", "Mughal Empire", "Temple", "Marble"],
+      },
+      "Marble": {
+        blurb: "A metamorphic rock prized for sculpture and construction, used in the world's most famous ivory-white mausoleum.",
+        links: ["Taj Mahal", "Architecture", "India"],
       },
       "Taj Mahal": {
-        blurb: "An ivory-white marble mausoleum in Agra, India, completed in 1653 by Emperor Shah Jahan. Widely considered the finest example of Mughal architecture and one of the New Seven Wonders of the World.",
-        links: {},
+        blurb: "An ivory-white marble mausoleum in Agra, completed in 1653, widely considered the finest example of Mughal architecture.",
+        links: ["Mughal Empire", "Architecture", "India"],
       },
     },
   },
@@ -722,52 +849,64 @@ const puzzles = [
     par: 4,
     articles: {
       "Lightning": {
-        blurb: "A natural electrical discharge between clouds or between a cloud and the ground. Benjamin Franklin's famous kite experiment in 1752 proved lightning was electrical in nature.",
-        links: {
-          "Electricity": true,
-          "Thunder": false,
-          "Storm": false,
-          "Benjamin Franklin": false,
-          "Weather": false,
-          "Cloud": false,
-        },
+        blurb: "A natural electrical discharge, proven to be electrical by Benjamin Franklin's 1752 kite experiment.",
+        links: ["Electricity", "Weather", "Energy", "Storm"],
       },
       "Electricity": {
-        blurb: "Energy resulting from the movement of charged particles. The ability to generate and control electricity enabled every electronic device, from light bulbs to the silicon chips powering modern entertainment.",
-        links: {
-          "Electronics": true,
-          "Power Plant": false,
-          "Voltage": false,
-          "Thomas Edison": false,
-          "Battery": false,
-          "Generator": false,
-        },
+        blurb: "Energy from charged particles, harnessed to power inventions from light bulbs to the silicon chips in modern devices.",
+        links: ["Electronics", "Energy", "Transistor", "Lightning"],
+      },
+      "Weather": {
+        blurb: "Atmospheric conditions including storms and lightning, now simulated by powerful computers and displayed on screens.",
+        links: ["Lightning", "Storm", "Computer"],
+      },
+      "Storm": {
+        blurb: "A disturbance of the atmosphere producing lightning, rain, or wind, dramatically depicted in movies and games alike.",
+        links: ["Lightning", "Weather", "Entertainment"],
+      },
+      "Energy": {
+        blurb: "The capacity to do work, from lightning bolts to the electrical current powering billions of electronic devices worldwide.",
+        links: ["Electricity", "Physics", "Lightning"],
       },
       "Electronics": {
-        blurb: "The branch of physics dealing with circuits and devices using electron flow. Consumer electronics evolved from radios and televisions to personal computers and dedicated gaming hardware.",
-        links: {
-          "Computer": true,
-          "Circuit Board": false,
-          "Diode": false,
-          "Television": false,
-          "Smartphone": false,
-          "Radio": false,
-        },
+        blurb: "The branch of physics dealing with circuits and devices, evolving from radios to personal computers and gaming hardware.",
+        links: ["Computer", "Transistor", "Television", "Electricity"],
+      },
+      "Physics": {
+        blurb: "The study of matter and energy, providing the theoretical foundation for electronics, computing, and interactive simulations.",
+        links: ["Energy", "Electronics", "Computer"],
+      },
+      "Transistor": {
+        blurb: "A semiconductor device invented in 1947, the building block enabling computers, graphics processors, and modern gaming.",
+        links: ["Computer", "Electronics", "Graphics"],
+      },
+      "Television": {
+        blurb: "A medium for visual content, with gaming consoles connecting to TV screens becoming a dominant entertainment platform.",
+        links: ["Entertainment", "Electronics", "Console"],
       },
       "Computer": {
-        blurb: "A programmable electronic device that processes data. From room-sized mainframes in the 1950s to today's powerful personal machines, computers became the platform for an entirely new form of interactive entertainment.",
-        links: {
-          "Video Games": true,
-          "Algorithm": false,
-          "Hard Drive": false,
-          "Internet": false,
-          "Keyboard": false,
-          "Operating System": false,
-        },
+        blurb: "A programmable device processing data, evolving from mainframes to the powerful machines running today's interactive entertainment.",
+        links: ["Video Games", "Graphics", "Software", "Electronics"],
+      },
+      "Graphics": {
+        blurb: "Visual images created by computer processing, with GPUs enabling increasingly realistic real-time rendering in interactive media.",
+        links: ["Video Games", "Computer", "Transistor"],
+      },
+      "Software": {
+        blurb: "Programs and operating data used by computers, including the creative medium of interactive digital entertainment.",
+        links: ["Video Games", "Computer", "Console"],
+      },
+      "Console": {
+        blurb: "A dedicated device for playing video games, from early Atari systems to modern PlayStation and Xbox hardware.",
+        links: ["Video Games", "Television", "Software"],
+      },
+      "Entertainment": {
+        blurb: "Activities providing amusement, with interactive digital media becoming the largest entertainment sector by revenue.",
+        links: ["Video Games", "Television", "Console"],
       },
       "Video Games": {
-        blurb: "An electronic game played on a screen using a controller or other input device. The global video game industry generates over $180 billion annually, surpassing film and music combined.",
-        links: {},
+        blurb: "Interactive electronic entertainment played on screens, a $180+ billion industry surpassing film and music combined.",
+        links: ["Computer", "Console", "Graphics"],
       },
     },
   },
@@ -778,52 +917,56 @@ const puzzles = [
     par: 4,
     articles: {
       "Violin": {
-        blurb: "A wooden string instrument and the smallest member of the string family. The violin emerged in 16th-century Italy and became central to Western classical music and cultural performance.",
-        links: {
-          "Classical Music": false,
-          "Italy": true,
-          "Orchestra": false,
-          "Stradivarius": false,
-          "Bow": false,
-          "String Quartet": false,
-        },
+        blurb: "A wooden string instrument emerging in 16th-century Italy, central to Western classical music and cultural performance.",
+        links: ["Italy", "Music", "Orchestra", "Performance"],
       },
       "Italy": {
-        blurb: "A southern European country shaped like a boot, renowned for art, music, and culture. Italy also has a proud sporting tradition and has hosted major international sporting events.",
-        links: {
-          "Ancient Rome": true,
-          "Venice": false,
-          "Pasta": false,
-          "Fashion": false,
-          "Renaissance": false,
-          "Soccer": false,
-        },
+        blurb: "A southern European country renowned for art, music, and a proud sporting tradition hosting major international events.",
+        links: ["Ancient Rome", "Music", "Europe", "Violin"],
+      },
+      "Music": {
+        blurb: "An art form combining sounds for expression, performed at ceremonies and events from concerts to sporting competitions.",
+        links: ["Performance", "Orchestra", "Culture", "Violin"],
+      },
+      "Orchestra": {
+        blurb: "A large ensemble of musicians, regularly performing at cultural and sporting ceremonies including Olympic opening events.",
+        links: ["Music", "Performance", "Violin", "Culture"],
+      },
+      "Performance": {
+        blurb: "The act of presenting art or skill before an audience, connecting musicians, actors, and athletes through spectacle.",
+        links: ["Athletics", "Music", "Culture"],
+      },
+      "Europe": {
+        blurb: "A continent with rich cultural heritage, from Italian music to Greek philosophy, and host to many Olympic Games.",
+        links: ["Italy", "Ancient Greece", "Culture", "Athletics"],
       },
       "Ancient Rome": {
-        blurb: "One of the most powerful civilizations in history, centered in the city of Rome. Romans built the Colosseum, where gladiatorial games entertained audiences — a precursor to organized competitive sports.",
-        links: {
-          "Ancient Greece": true,
-          "Colosseum": false,
-          "Roman Empire": false,
-          "Julius Caesar": false,
-          "Aqueduct": false,
-          "Latin": false,
-        },
+        blurb: "One of history's most powerful civilizations, whose Colosseum hosted gladiatorial games as a precursor to organized sport.",
+        links: ["Ancient Greece", "Italy", "Colosseum"],
+      },
+      "Colosseum": {
+        blurb: "An ancient Roman amphitheater hosting spectacular games and competitions, seating 50,000 spectators in a prototype for modern stadiums.",
+        links: ["Ancient Rome", "Athletics", "Stadium"],
+      },
+      "Culture": {
+        blurb: "The arts, customs, and social institutions of a society, with athletic competition and music deeply woven into civilization.",
+        links: ["Performance", "Ancient Greece", "Europe", "Music"],
       },
       "Ancient Greece": {
-        blurb: "A civilization that flourished from roughly 800 BC to 31 BC, making foundational contributions to philosophy, democracy, theater, and athletics. The Greeks established the original competitive games at Olympia in 776 BC.",
-        links: {
-          "Olympics": true,
-          "Democracy": false,
-          "Philosophy": false,
-          "Athens": false,
-          "Sparta": false,
-          "Mythology": false,
-        },
+        blurb: "A civilization making foundational contributions to philosophy, democracy, theater, and athletics, establishing games at Olympia in 776 BC.",
+        links: ["Olympics", "Athletics", "Europe", "Ancient Rome"],
+      },
+      "Athletics": {
+        blurb: "Competitive physical sports including running, jumping, and throwing, with roots in ancient Greek competitions at Olympia.",
+        links: ["Olympics", "Ancient Greece", "Stadium", "Performance"],
+      },
+      "Stadium": {
+        blurb: "A venue for sports and events, from the ancient Greek stadion at Olympia to modern arenas hosting the world's athletes.",
+        links: ["Olympics", "Athletics", "Colosseum"],
       },
       "Olympics": {
-        blurb: "The world's foremost international multi-sport event, held every four years. Inspired by the ancient Greek games at Olympia, the modern Olympics were revived in Athens in 1896.",
-        links: {},
+        blurb: "The world's foremost multi-sport event held every four years, inspired by the ancient Greek games, revived in Athens in 1896.",
+        links: ["Athletics", "Ancient Greece", "Stadium"],
       },
     },
   },
@@ -831,55 +974,67 @@ const puzzles = [
     id: 15,
     start: "Pyramids",
     target: "Electric Car",
-    par: 5,
+    par: 4,
     articles: {
       "Pyramids": {
-        blurb: "Monumental structures built as tombs for Egyptian pharaohs. The Great Pyramid of Giza, built around 2560 BC, is the oldest of the Seven Wonders of the Ancient World.",
-        links: {
-          "Ancient Egypt": true,
-          "Pharaoh": false,
-          "Sphinx": false,
-          "Tomb": false,
-          "Sand": false,
-          "Archaeology": false,
-        },
+        blurb: "Monumental structures built as tombs for Egyptian pharaohs, the Great Pyramid being the oldest of the Seven Wonders.",
+        links: ["Ancient Egypt", "Architecture", "Desert", "Stone"],
       },
       "Ancient Egypt": {
-        blurb: "A civilization along the Nile River lasting over 3,000 years. Egyptians made remarkable advances in mathematics, medicine, and engineering that influenced all subsequent Mediterranean civilizations.",
-        links: {
-          "Engineering": true,
-          "Nile River": false,
-          "Hieroglyphics": false,
-          "Mummy": false,
-          "Cleopatra": false,
-          "Papyrus": false,
-        },
+        blurb: "A Nile River civilization lasting 3,000 years, making remarkable advances in mathematics, medicine, and engineering.",
+        links: ["Engineering", "Architecture", "Pyramids", "Science"],
+      },
+      "Architecture": {
+        blurb: "The art of designing structures, from ancient pyramids to modern factories manufacturing the vehicles of the future.",
+        links: ["Engineering", "Ancient Egypt", "Design"],
+      },
+      "Desert": {
+        blurb: "Arid regions receiving little rainfall, now among the best locations for solar energy farms powering clean technology.",
+        links: ["Solar Energy", "Ancient Egypt", "Pyramids"],
+      },
+      "Stone": {
+        blurb: "Natural solid mineral material used in construction for millennia, from pyramids to the mining of lithium-bearing ores today.",
+        links: ["Mining", "Pyramids", "Ancient Egypt"],
       },
       "Engineering": {
-        blurb: "The application of science and mathematics to design and build structures, machines, and systems. Modern engineering disciplines include civil, mechanical, electrical, and automotive engineering.",
-        links: {
-          "Automotive Industry": true,
-          "Bridge": false,
-          "Blueprint": false,
-          "Mechanical": false,
-          "Civil Engineering": false,
-          "Patent": false,
-        },
+        blurb: "The application of science to design and build, from ancient monument construction to modern electrical and automotive systems.",
+        links: ["Automotive Industry", "Science", "Architecture", "Electricity"],
+      },
+      "Science": {
+        blurb: "Systematic study of the natural world, from ancient Egyptian mathematics to the chemistry powering clean energy systems.",
+        links: ["Engineering", "Electricity", "Solar Energy"],
+      },
+      "Design": {
+        blurb: "The process of creating plans for objects and systems, from architectural blueprints to sleek modern vehicle styling.",
+        links: ["Automotive Industry", "Architecture", "Engineering"],
+      },
+      "Solar Energy": {
+        blurb: "Energy harnessed from sunlight using photovoltaic cells, increasingly used to charge the batteries in electric vehicles.",
+        links: ["Battery", "Electricity", "Desert"],
+      },
+      "Mining": {
+        blurb: "The extraction of minerals from the earth, including lithium essential for the rechargeable batteries in modern vehicles.",
+        links: ["Battery", "Stone", "Science"],
+      },
+      "Electricity": {
+        blurb: "Energy from charged particles, powering everything from ancient-inspired lighting to the motors in battery-powered vehicles.",
+        links: ["Battery", "Engineering", "Motor"],
       },
       "Automotive Industry": {
-        blurb: "The sector involved in designing, manufacturing, and selling motor vehicles. Founded on the internal combustion engine, the industry is now undergoing its biggest transformation with the shift to electric powertrains.",
-        links: {
-          "Electric Car": true,
-          "Henry Ford": false,
-          "Assembly Line": false,
-          "Gasoline": false,
-          "Highway": false,
-          "Car Dealership": false,
-        },
+        blurb: "The sector designing and manufacturing vehicles, undergoing its biggest transformation with the shift to electric powertrains.",
+        links: ["Electric Car", "Motor", "Engineering", "Design"],
+      },
+      "Battery": {
+        blurb: "A device storing electrical energy chemically, with lithium-ion technology enabling the range needed for practical electric vehicles.",
+        links: ["Electric Car", "Electricity", "Solar Energy"],
+      },
+      "Motor": {
+        blurb: "A machine converting energy into mechanical motion, with electric motors now rivaling combustion engines in performance.",
+        links: ["Electric Car", "Automotive Industry", "Electricity"],
       },
       "Electric Car": {
-        blurb: "An automobile powered by one or more electric motors using energy stored in rechargeable batteries. Electric vehicles are projected to make up the majority of new car sales by 2035.",
-        links: {},
+        blurb: "An automobile powered by electric motors and rechargeable batteries, projected to dominate new car sales by 2035.",
+        links: ["Automotive Industry", "Battery", "Motor"],
       },
     },
   },
