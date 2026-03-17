@@ -1,0 +1,475 @@
+/* Container */
+.container {
+  font-family: var(--font-outfit), sans-serif;
+  max-width: 430px;
+  margin: 0 auto;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0ddd8;
+  flex-shrink: 0;
+}
+
+.logo {
+  font-family: var(--font-dm-serif), serif;
+  font-size: 1.4rem;
+  color: #3366cc;
+}
+
+.stats {
+  display: flex;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Start Screen */
+.startScreen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  animation: fadeUp 0.5s ease;
+}
+
+.challenge {
+  text-align: center;
+}
+
+.challengeLabel {
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.challengeTopics {
+  font-family: var(--font-dm-serif), serif;
+  font-size: 1.8rem;
+  color: #222;
+  line-height: 1.3;
+}
+
+.arrow {
+  color: #3366cc;
+  margin: 0 8px;
+}
+
+.parInfo {
+  font-size: 0.95rem;
+  color: #666;
+  background: #f0eeea;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.startBtn {
+  background: #3366cc;
+  color: white;
+  border: none;
+  padding: 14px 48px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.startBtn:active {
+  transform: scale(0.96);
+  background: #2952a3;
+}
+
+.howToPlay {
+  color: #3366cc;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  font-family: var(--font-outfit), sans-serif;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Playing Screen */
+.playingScreen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+  padding-top: 12px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #888;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.breadcrumbItem {
+  color: #888;
+}
+
+.breadcrumbCurrent {
+  color: #3366cc;
+  font-weight: 600;
+}
+
+.breadcrumbArrow {
+  color: #ccc;
+}
+
+.targetBadge {
+  margin-left: auto;
+  background: #f0eeea;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* Article Card */
+.articleCard {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  flex-shrink: 0;
+  animation: fadeUp 0.3s ease;
+}
+
+.articleCard.shake {
+  animation: shake 0.5s ease;
+}
+
+.articleCard.wobble {
+  animation: wobble 0.5s ease;
+}
+
+.articleTitle {
+  font-family: var(--font-dm-serif), serif;
+  font-size: 1.5rem;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+.articleBlurb {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* Links */
+.linksSection {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.linksLabel {
+  font-size: 0.75rem;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.linksList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.linkBtn {
+  background: white;
+  border: 1.5px solid #e0ddd8;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  font-family: var(--font-outfit), sans-serif;
+  color: #3366cc;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.1s, border-color 0.15s, background 0.15s;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.linkBtn:active {
+  transform: scale(0.98);
+}
+
+.linkBtn.correct {
+  background: #e8f5e9;
+  border-color: #228B22;
+  animation: popIn 0.3s ease;
+}
+
+.linkBtn.trap {
+  background: #fdecea;
+  border-color: #cc3333;
+  animation: popIn 0.3s ease;
+}
+
+.linkBtn.loop {
+  background: #fff8e1;
+  border-color: #f9a825;
+  animation: popIn 0.3s ease;
+}
+
+/* Footer bar */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid #e0ddd8;
+  flex-shrink: 0;
+}
+
+.clickCounter {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.clickCount {
+  font-weight: 700;
+  color: #222;
+}
+
+.backBtn {
+  background: #f0eeea;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family: var(--font-outfit), sans-serif;
+  color: #666;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.backBtn:active {
+  background: #e0ddd8;
+}
+
+.backBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Toast */
+.toast {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-outfit), sans-serif;
+  animation: fadeUp 0.3s ease;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.toastTrap {
+  background: #cc3333;
+  color: white;
+}
+
+.toastLoop {
+  background: #f9a825;
+  color: #222;
+}
+
+/* Win Screen */
+.winScreen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  animation: fadeUp 0.5s ease;
+  text-align: center;
+}
+
+.winTitle {
+  font-family: var(--font-dm-serif), serif;
+  font-size: 1.8rem;
+  color: #228B22;
+}
+
+.winRoute {
+  font-size: 1rem;
+  color: #222;
+  line-height: 1.6;
+}
+
+.winStats {
+  display: flex;
+  gap: 24px;
+}
+
+.winStat {
+  text-align: center;
+}
+
+.winStatValue {
+  font-family: var(--font-dm-serif), serif;
+  font-size: 2rem;
+  color: #222;
+}
+
+.winStatLabel {
+  font-size: 0.8rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stars {
+  font-size: 2rem;
+  letter-spacing: 4px;
+}
+
+.shareBtn {
+  background: #3366cc;
+  color: white;
+  border: none;
+  padding: 14px 36px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.shareBtn:active {
+  transform: scale(0.96);
+  background: #2952a3;
+}
+
+.copied {
+  font-size: 0.85rem;
+  color: #228B22;
+  font-weight: 600;
+}
+
+.xpGain {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+  padding: 16px;
+}
+
+.modal {
+  background: white;
+  border-radius: 20px;
+  padding: 28px 24px;
+  max-width: 360px;
+  width: 100%;
+  animation: popIn 0.3s ease;
+}
+
+.modalTitle {
+  font-family: var(--font-dm-serif), serif;
+  font-size: 1.4rem;
+  color: #222;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.modalText {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.modalClose {
+  display: block;
+  margin: 16px auto 0;
+  background: #3366cc;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.95); opacity: 0; }
+  70% { transform: scale(1.02); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+  75% { transform: rotate(-1deg); }
+}
