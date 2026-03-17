@@ -47,7 +47,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   animation: fadeUp 0.5s ease;
 }
 
@@ -81,6 +81,75 @@
   background: #f0eeea;
   padding: 8px 16px;
   border-radius: 20px;
+}
+
+/* Difficulty Selector */
+.difficultySection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.difficultyLabel {
+  font-size: 0.75rem;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.difficultyBtns {
+  display: flex;
+  gap: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1.5px solid #e0ddd8;
+}
+
+.difficultyBtn {
+  background: white;
+  border: none;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-family: var(--font-outfit), sans-serif;
+  color: #666;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  border-right: 1px solid #e0ddd8;
+}
+
+.difficultyBtn:last-child {
+  border-right: none;
+}
+
+.difficultyActive {
+  background: #3366cc;
+  color: white;
+}
+
+.difficultyDesc {
+  font-size: 0.8rem;
+  color: #999;
+  font-style: italic;
+}
+
+/* Timer Toggle */
+.timerToggle {
+  background: #f0eeea;
+  border: 1.5px solid #e0ddd8;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-family: var(--font-outfit), sans-serif;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.timerToggleOn {
+  background: #e8f5e9;
+  border-color: #228B22;
+  color: #228B22;
 }
 
 .startBtn {
@@ -199,6 +268,27 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hintBtn {
+  background: #fff8e1;
+  border: 1px solid #f9a825;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-family: var(--font-outfit), sans-serif;
+  color: #b8860b;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+  transition: background 0.15s;
+}
+
+.hintBtn:active {
+  background: #ffecb3;
 }
 
 .linksList {
@@ -220,6 +310,9 @@
   transition: transform 0.1s, border-color 0.15s, background 0.15s;
   text-decoration: underline;
   text-underline-offset: 2px;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .linkBtn:active {
@@ -244,6 +337,56 @@
   animation: popIn 0.3s ease;
 }
 
+/* Revealed trap link */
+.linkRevealed {
+  background: #f5f3f0;
+  border-color: #ddd;
+  color: #bbb;
+  text-decoration: line-through;
+  cursor: default;
+}
+
+.linkRevealed:active {
+  transform: none;
+}
+
+.revealedTag {
+  font-size: 0.75rem;
+  color: #cc3333;
+  text-decoration: none;
+  font-style: italic;
+}
+
+/* Preview Tooltip */
+.previewTooltip {
+  position: fixed;
+  transform: translateY(-100%);
+  background: white;
+  border: 1.5px solid #3366cc;
+  border-radius: 12px;
+  padding: 12px 16px;
+  max-width: 300px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  z-index: 50;
+  animation: fadeUp 0.2s ease;
+  pointer-events: none;
+}
+
+.previewTooltip strong {
+  font-family: var(--font-dm-serif), serif;
+  font-size: 0.9rem;
+  color: #222;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.previewTooltip p {
+  font-size: 0.8rem;
+  color: #555;
+  line-height: 1.4;
+  margin: 0;
+}
+
 /* Footer bar */
 .footer {
   display: flex;
@@ -262,6 +405,25 @@
 .clickCount {
   font-weight: 700;
   color: #222;
+}
+
+.timer {
+  color: #3366cc;
+  font-weight: 600;
+}
+
+.footerRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hintCount {
+  font-size: 0.75rem;
+  color: #b8860b;
+  background: #fff8e1;
+  padding: 4px 8px;
+  border-radius: 8px;
 }
 
 .backBtn {
@@ -311,6 +473,11 @@
   color: #222;
 }
 
+.toastHint {
+  background: #3366cc;
+  color: white;
+}
+
 /* Win Screen */
 .winScreen {
   flex: 1;
@@ -318,7 +485,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   animation: fadeUp 0.5s ease;
   text-align: center;
 }
@@ -360,6 +527,24 @@
 .stars {
   font-size: 2rem;
   letter-spacing: 4px;
+}
+
+.difficultyBadge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #3366cc;
+  background: #e8eef7;
+  padding: 4px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.hintsBadge {
+  font-size: 0.8rem;
+  color: #b8860b;
+  background: #fff8e1;
+  padding: 4px 14px;
+  border-radius: 20px;
 }
 
 .shareBtn {
@@ -411,6 +596,8 @@
   max-width: 360px;
   width: 100%;
   animation: popIn 0.3s ease;
+  max-height: 85dvh;
+  overflow-y: auto;
 }
 
 .modalTitle {
@@ -426,6 +613,12 @@
   color: #555;
   line-height: 1.6;
   margin-bottom: 12px;
+}
+
+.modalDivider {
+  border: none;
+  border-top: 1px solid #e0ddd8;
+  margin: 16px 0;
 }
 
 .modalClose {
