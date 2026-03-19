@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import Link from "next/link";
 import puzzles from "@/data/puzzles";
 import styles from "./WikiChainGame.module.css";
 
@@ -334,6 +335,13 @@ export default function WikiChainGame() {
         <div className={styles.stats}>
           <span className={styles.statItem}>{xp} XP</span>
           <span className={styles.statItem}>{streak} streak</span>
+          <Link
+            href="/help"
+            className={styles.howToPlay}
+            style={{ marginLeft: 4 }}
+          >
+            GUIDE
+          </Link>
           <button
             className={styles.howToPlay}
             onClick={() => setShowModal(true)}

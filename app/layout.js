@@ -18,6 +18,10 @@ export const metadata = {
   title: "WikiChain — Daily Link Puzzle",
   description: "Find the shortest path between two topics. Watch out for traps!",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/icon-192.png",
+    apple: "/icon-192.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
